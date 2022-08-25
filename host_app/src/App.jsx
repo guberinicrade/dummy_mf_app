@@ -7,7 +7,7 @@ import { StoreProvider, useStore } from "store/store";
 
 const App = () => {
   const [counter, setCounter] = useState(0);
-  const {count, increment} = useStore()
+  const { count, increment } = useStore();
   const handleSetCounter = () => {
     setCounter(counter + 1);
   };
@@ -21,7 +21,7 @@ const App = () => {
   return (
     <div className={classes.host_container}>
       <div className={classes.host_div}>
-        <p>I belong to the HOST APP</p>
+        <p>I belong to the HOST APP from Arlind</p>
         <p>{counter}</p>
         <button onClick={handleSetCounter}>increment</button>
       </div>
