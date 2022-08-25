@@ -5,10 +5,10 @@ import classes from "../../css_modules/main.module.css";
 
 import "./index.css";
 
-const App = ({ counter, resetCounter }) => {
+const App = () => {
   return (
     <div className={classes.container}>
-      <Header counter={counter} resetCounter={resetCounter}/>
+      This is a child app
     </div>
   );
 };

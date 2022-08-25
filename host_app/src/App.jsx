@@ -1,39 +1,59 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import Header from "child/Child";
+import Child from "child/Child";
 import "./index.css";
 import classes from "../../css_modules/main.module.css";
 import { StoreProvider, useStore } from "store/store";
+import LoginPage from "./components/LoginPage";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 
 const App = () => {
-  const [counter, setCounter] = useState(0);
-  const {count, increment} = useStore()
-  const handleSetCounter = () => {
-    setCounter(counter + 1);
-  };
-  const resetCounter = () => {
-    setCounter(0);
+  const navigate = useNavigate()
+  //state
+  const [users, setUsers] = useState([
+    { username: "rade", password: "123" },
+    { username: "zhika", password: "123" },
+    { username: "arlind", password: "123" },
+    { username: "alex", password: "123" },
+    { username: "iryna", password: "123" },
+  ]);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  //functions
+  const handleLogin = () => {
+    for (const user of users) {
+      if (user.username === username && user.password === password) {
+        navigate('/home')
+        return;
+      }
+    }
   };
 
-  useEffect(() => {
-    console.log(store);
-  }, []);
   return (
     <div className={classes.host_container}>
-      <div className={classes.host_div}>
-        <p>I belong to the HOST APP</p>
-        <p>{counter}</p>
-        <button onClick={handleSetCounter}>increment</button>
+      <div className={classes.wrapper}>
+        <Routes>
+          <Route
+            path={"/"}
+            element={
+              <LoginPage
+                setUsername={setUsername}
+                setPassword={setPassword}
+                handleLogin={handleLogin}
+              />
+            }
+          />
+          <Route path={"home"} element={<Child/>}/>
+        </Routes>
       </div>
-      <Header counter={counter} resetCounter={resetCounter} />
-      <p>this comes from the store {count}</p>
-      <button onClick={increment}>INCREMENT</button>
     </div>
   );
 };
 ReactDOM.render(
   <StoreProvider>
-    <App />
+    <Router>
+      <App />
+    </Router>
   </StoreProvider>,
   document.getElementById("app")
 );
