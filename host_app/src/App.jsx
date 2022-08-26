@@ -5,10 +5,16 @@ import "./index.css";
 import classes from "../../css_modules/main.module.css";
 import { StoreProvider, useStore } from "store/store";
 import LoginPage from "./components/LoginPage";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 const App = () => {
-  const navigate = useNavigate()
+  const { setIsLoggedIn, setUserData, isLoggedIn } = useStore();
+  const navigate = useNavigate();
+
   //state
   const [users, setUsers] = useState([
     { username: "rade", password: "123" },
@@ -19,13 +25,17 @@ const App = () => {
   ]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   //functions
   const handleLogin = () => {
     for (const user of users) {
       if (user.username === username && user.password === password) {
-        navigate('/home')
+        setIsLoggedIn(true);
+        setUserData(user);
+        navigate("/home");
         return;
       }
+      setErrorMsg("User Not Found!")
     }
   };
 
@@ -37,13 +47,17 @@ const App = () => {
             path={"/"}
             element={
               <LoginPage
+                username={username}
+                password={password}
                 setUsername={setUsername}
                 setPassword={setPassword}
                 handleLogin={handleLogin}
+                errorMsg={errorMsg}
+                setErrorMsg={setErrorMsg}
               />
             }
           />
-          <Route path={"home"} element={<Child/>}/>
+          <Route path={"home"} element={<Child />} />
         </Routes>
       </div>
     </div>
