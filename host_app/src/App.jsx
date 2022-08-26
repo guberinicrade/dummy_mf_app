@@ -5,6 +5,7 @@ import "./index.css";
 import classes from "../../css_modules/main.module.css";
 import { StoreProvider, useStore } from "store/store";
 import LoginPage from "./components/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,10 +13,12 @@ import {
   useNavigate,
 } from "react-router-dom";
 const App = () => {
+  //integrated hooks
   const { setIsLoggedIn, setUserData, isLoggedIn } = useStore();
   const navigate = useNavigate();
 
   //state
+
   const [users, setUsers] = useState([
     { username: "rade", password: "123" },
     { username: "zhika", password: "123" },
@@ -27,6 +30,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   //functions
+
   const handleLogin = () => {
     for (const user of users) {
       if (user.username === username && user.password === password) {
@@ -35,9 +39,13 @@ const App = () => {
         navigate("/home");
         return;
       }
-      setErrorMsg("User Not Found!")
+      setErrorMsg("User Not Found!");
     }
   };
+
+  useEffect(()=>{
+    console.log(isLoggedIn);
+  },[])
 
   return (
     <div className={classes.host_container}>
@@ -46,19 +54,23 @@ const App = () => {
           <Route
             path={"/"}
             element={
-              <LoginPage
-                username={username}
-                password={password}
-                setUsername={setUsername}
-                setPassword={setPassword}
-                handleLogin={handleLogin}
-                errorMsg={errorMsg}
-                setErrorMsg={setErrorMsg}
-              />
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <LoginPage
+                  username={username}
+                  password={password}
+                  setUsername={setUsername}
+                  setPassword={setPassword}
+                  handleLogin={handleLogin}
+                  errorMsg={errorMsg}
+                  setErrorMsg={setErrorMsg}
+                  isLoggedIn={isLoggedIn}
+                />
+              </ProtectedRoute>
             }
           />
           <Route path={"home"} element={<Child />} />
         </Routes>
+        
       </div>
     </div>
   );

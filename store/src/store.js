@@ -2,36 +2,39 @@ import React from "react";
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { Provider, useSelector, useDispatch } from "react-redux";
 
-export const counterSlice = createSlice({
-  name: "counter",
+export const userSlice = createSlice({
+  name: "user",
   initialState: {
-    count: 0,
+    isLoggedIn: false,
+    userData: {},
   },
   reducers: {
-    increment: (state) => {
-      state.count += 1;
+    setIsLoggedIn: (state, action) => {
+      state.isLoggedIn = action.payload;
+      console.log(state.isLoggedIn, "isloggedin");
     },
-    clear: (state) => {
-      state.count = 0;
+    setUserData: (state, action) => {
+      state.userData = action.payload;
+      console.log(state.userData);
     },
   },
 });
 
-const { increment, clear } = counterSlice.actions;
+const { setIsLoggedIn, setUserData } = userSlice.actions;
 
 const store = configureStore({
   reducer: {
-    counter: counterSlice.reducer,
+    user: userSlice.reducer,
   },
 });
 
 export function useStore() {
-  const count = useSelector((state) => state.counter.count);
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
   const dispatch = useDispatch();
   return {
-    count,
-    increment: () => dispatch(increment()),
-    clear: () => dispatch(clear()),
+    isLoggedIn,
+    setIsLoggedIn: (action) => dispatch(setIsLoggedIn(action)),
+    setUserData: (action) => dispatch(setUserData(action)),
   };
 }
 

@@ -6,7 +6,7 @@ const LoginPage = (props) => {
   //functions
   const checkInputValidity = () => {
     if (props.username === "" || props.password === "") {
-      setErrorMsg("Please fill all fields!");
+      props.setErrorMsg("Please fill all fields!");
       return;
     }
     props.handleLogin();
@@ -42,6 +42,7 @@ const LoginPage = (props) => {
           Log in
         </button>
         {props.errorMsg && <span className={classes['login-error']}>{props.errorMsg}</span>}
+        {props.isLoggedIn}
       </div>
     </div>
   );
