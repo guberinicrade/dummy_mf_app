@@ -1,13 +1,13 @@
 import React from "react";
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { Provider, useSelector, useDispatch } from "react-redux";
-
+const initialState = {
+  isLoggedIn: false,
+  userData: {},
+};
 export const userSlice = createSlice({
   name: "user",
-  initialState: {
-    isLoggedIn: false,
-    userData: {},
-  },
+  initialState,
   reducers: {
     setIsLoggedIn: (state, action) => {
       state.isLoggedIn = action.payload;
@@ -29,7 +29,7 @@ const store = configureStore({
 });
 
 export function useStore() {
-  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
   return {
     isLoggedIn,
